@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Colorful Shop</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom right, #f0f4f8, #d9e2ec);
+    }
+
+    header {
+      background-color: #2f3e46;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    nav {
+      background: #52796f;
+      padding: 15px;
+      text-align: center;
+    }
+
+    nav button {
+      background: #cad2c5;
+      color: #2f3e46;
+      margin: 0 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    nav button:hover {
+      background: #84a98c;
+      color: white;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    .product {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      margin: 15px;
+      width: 220px;
+      padding: 15px;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .product:hover {
+      transform: scale(1.05);
+    }
+
+    .product img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .product button {
+      background-color: #52796f;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .product button:hover {
+      background-color: #354f52;
+    }
+
+    .cart {
+      position: fixed;
+      top: 100px;
+      right: 20px;
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      width: 250px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .cart h3 {
+      margin-top: 0;
+      color: #354f52;
+    }
+
+    .cart ul {
+      list-style-type: square;
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>My E-Commerce Store</h1>
+  </header>
+
+  <nav>
+    <button onclick="filterCategory('All')">All</button>
+    <button onclick="filterCategory('Clothing')">Clothing</button>
+    <button onclick="filterCategory('Electronics')">Electronics</button>
+    <button onclick="filterCategory('Books')">Books</button>
+  </nav>
+
+  <div class="container" id="product-list"></div>
+
+  <div class="cart" id="cart">
+    <h3>Your Cart</h3>
+    <ul id="cart-items"></ul>
+  </div>
+
+  <script>
+    const products = [
+      { name: "T-Shirt", category: "Clothing", price: "$599", image: "https://www.thewalkdeal.com/cdn/shop/products/Alone-NavyBlue.jpg?v=1640675727" },
+      { name: "Jeans", category: "Clothing", price: "$999", image: "https://assets.ajio.com/medias/sys_master/root/20240808/ncPY/66b4feca6f60443f31f940db/-473Wx593H-469665007-ckblack-MODEL.jpg" },
+      { name: "Laptop", category: "Electronics", price: "$50000", image: "https://cdn.thewirecutter.com/wp-content/media/2024/11/cheapgaminglaptops-2048px-7981.jpg" },
+      { name: "Headphones", category: "Electronics", price: "$1500", image: "https://www.boat-lifestyle.com/cdn/shop/products/main2_b66dce6b-710d-49cb-9d1c-2bc8c9c0ab15.png?v=1645698328" },
+      { name: "Book - Java", category: "Books", price: "$799", image: "https://content.packt.com/B16682/cover_image.jpg" },
+      { name: "Book - HTML", category: "Books", price: "$899", image: "https://rukminim2.flixcart.com/image/850/1000/kjbr8280-0/book/e/b/4/html-css-the-complete-reference-fifth-edition-original-imafyxe9eugcmk6q.jpeg?q=20&crop=false" },
+    ];
+
+    const productList = document.getElementById("product-list");
+    const cartItems = document.getElementById("cart-items");
+    let cart = [];
+
+    function renderProducts(filtered = products) {
+      productList.innerHTML = "";
+      filtered.forEach(product => {
+        const div = document.createElement("div");
+        div.className = "product";
+        div.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" />
+          <h4>${product.name}</h4>
+          <p>${product.category}</p>
+          <p><strong>${product.price}</strong></p>
+          <button onclick="addToCart('${product.name} - ${product.price}')">Add to Cart</button>
+        `;
+        productList.appendChild(div);
+      });
+    }
+
+    function filterCategory(cat) {
+      if (cat === "All") {
+        renderProducts();
+      } else {
+        const filtered = products.filter(p => p.category === cat);
+        renderProducts(filtered);
+      }
+    }
+
+    function addToCart(itemName) {
+      cart.push(itemName);
+      updateCart();
+    }
+
+    function updateCart() {
+      cartItems.innerHTML = "";
+      cart.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        cartItems.appendChild(li);
+      });
+    }
+
+    renderProducts();
+  </script>
+</body>
+</html>
